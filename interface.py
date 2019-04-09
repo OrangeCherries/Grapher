@@ -7,6 +7,7 @@ Created on Mon Apr  8 13:07:41 2019
 
 import tkinter as tk
 from tkinter import filedialog
+from tkinter.colorchooser import *
 from tkinter import ttk
 import os.path
 from Grapher import make_graph, getdata
@@ -18,46 +19,74 @@ class interface:
         self.cur_loc = '/'
         window.title('Interface')
         window.geometry('1000x500')
-        #xdata
-        self.file_button_x = ttk.Button(window, text = 'Load x data', command = self.add_x)
-        self.file_button_x.grid(column = 0, row = 0)
-        self.listbox_xlabel = ttk.Label(window, text = 'x data')
-        self.listbox_xlabel.grid(column = 0, row = 1)
         #frame_x ( listbox + scrollbar )
         self.frame_x = tk.Frame(window)
-        scrollx = tk.Scrollbar(self.frame_x, orient = 'horizontal')
-        scrollx.grid(column = 0, row = 1, sticky = 'EW')
+        #xdata
+        self.file_button_x = ttk.Button(self.frame_x, text = 'Load x data', command = self.add_x)
+        self.file_button_x.grid(column = 0, row = 0)
+        #x listbox
+        self.listbox_xlabel = ttk.Label(self.frame_x, text = 'x data')
+        self.listbox_xlabel.grid(column = 0, row = 1)
         self.listbox_x = tk.Listbox(self.frame_x, width = 40, height = 10)
-        self.listbox_x.grid(column = 0, row = 0)
+        self.listbox_x.grid(column = 0, row = 2)
+        #x listbox scrollbar
+        scrollx = tk.Scrollbar(self.frame_x, orient = 'horizontal')
+        scrollx.grid(column = 0, row = 3, sticky = 'EW')
         scrollx.config(command = self.listbox_x.xview)
         self.listbox_x.config(xscrollcommand = scrollx.set)
-        self.frame_x.grid(column = 0, row = 2)
+        #del x button
+        self.del_button_x = ttk.Button(self.frame_x, text = 'Delete x data', command = self.del_x)
+        self.del_button_x.grid(column = 0, row = 4)
+        self.frame_x.grid(column = 0, row = 0)
         
-        self.del_button_x = ttk.Button(window, text = 'Delete x data', command = self.del_x)
-        self.del_button_x.grid(column = 0, row = 3)
-        #ydata
-        self.file_button_y = ttk.Button(window, text = 'Load y data', command = self.add_y)
-        self.file_button_y.grid(column = 1, row = 0) 
-        self.listbox_ylabel = ttk.Label(window, text = 'y data')
-        self.listbox_ylabel.grid(column = 1, row = 1)
+
         #frame_Y (listbox + scrollbar)
         self.frame_y = tk.Frame(window)
-        scrolly = tk.Scrollbar(self.frame_y, orient = 'horizontal')
-        scrolly.grid(column = 1, row = 1, sticky = 'EW')
+        #ydata
+        self.file_button_y = ttk.Button(self.frame_y, text = 'Load y data', command = self.add_y)
+        self.file_button_y.grid(column = 0, row = 0) 
+        self.listbox_ylabel = ttk.Label(self.frame_y, text = 'y data')
+        self.listbox_ylabel.grid(column = 0, row = 1)
+        #listbox
         self.listbox_y = tk.Listbox(self.frame_y, width = 40, height = 10)
-        self.listbox_y.grid(column = 1, row = 0)
+        self.listbox_y.grid(column = 0, row = 2)
+        #listbox scrollbar
+        scrolly = tk.Scrollbar(self.frame_y, orient = 'horizontal')
+        scrolly.grid(column = 0, row = 3, sticky = 'EW')
         scrolly.config(command = self.listbox_y.xview)
         self.listbox_y.config(xscrollcommand = scrolly.set)
-        self.frame_y.grid(column = 1, row = 2)
+        #del y
+        self.del_button_y = ttk.Button(self.frame_y, text = 'Delete y data', command = self.del_y)
+        self.del_button_y.grid(column = 0, row = 4)
+        self.frame_y.grid(column = 1, row = 0)
         
-        self.del_button_y = ttk.Button(window, text = 'Delete y data', command = self.del_y)
-        self.del_button_y.grid(column = 1, row = 3)
-        
-        #x and y label Entry boxes
-        self.entry_xlabel = ttk.Entry(window)
-        self.entry_xlabel.grid(column = 3, row = 2)
-        self.entry_ylabel = ttk.Entry(window)
-        self.entry_ylabel.grid(column = 3, row = 3)
+        #color picker frame
+        self.frame_cp = tk.Frame(window)
+        self.cp_button = ttk.Button(self.frame_cp, text = 'Choose Colour', command = self.add_cp)
+        self.cp_button.grid(column = 0, row = 0)
+        self.cp_label = ttk.Label(self.frame_cp, text = 'Colour')
+        self.cp_label.grid(column = 0, row = 1)
+        self.listbox_cp = tk.Listbox(self.frame_cp, width = 40, height = 10)
+        self.listbox_cp.grid(column = 0, row = 2)
+        self.del_cp_button = ttk.Button(self.frame_cp, text = 'Delete Colour', command = self.del_cp)
+        self.del_cp_button.grid(column = 0, row = 3)
+        self.frame_cp.grid(column = 2, row = 0)
+                
+        #Entry boxes
+        self.frame_entry_boxes = tk.Frame(window)
+        self.title_label = ttk.Label(self.frame_entry_boxes, text = 'Title')
+        self.title_label.grid(column = 0, row = 1)
+        self.entry_title = ttk.Entry(self.frame_entry_boxes)
+        self.entry_title.grid(column = 0, row = 2)
+        self.title_label = ttk.Label(self.frame_entry_boxes, text = 'X label')
+        self.title_label.grid(column = 0, row = 3)
+        self.entry_xlabel = ttk.Entry(self.frame_entry_boxes)
+        self.entry_xlabel.grid(column = 0, row = 4)
+        self.title_label = ttk.Label(self.frame_entry_boxes, text = 'Y label')
+        self.title_label.grid(column = 0, row = 5)
+        self.entry_ylabel = ttk.Entry(self.frame_entry_boxes)
+        self.entry_ylabel.grid(column = 0, row = 6)
+        self.frame_entry_boxes.grid(column = 0, row = 4)
         #getxy
         self.getxy_button = ttk.Button(window, text = 'get all', command = self.get_graphs)
         self.getxy_button.grid(column = 5, row = 1)
@@ -82,6 +111,20 @@ class interface:
     def del_y(self):
         try:
             self.listbox_y.delete(self.listbox_y.curselection())
+        except tk.TclError:
+            pass
+        
+    def add_cp(self):
+        self.color = tk.colorchooser.askcolor()
+        self.listbox_cp.insert(tk.END, self.color[1])
+        try:
+            self.listbox_cp.itemconfig(tk.END, {'fg': self.color[1]})
+        except tk.TclError:
+            pass
+        
+    def del_cp(self):
+        try:
+            self.listbox_cp.delete(self.listbox_cp.curselection())
         except tk.TclError:
             pass
         
