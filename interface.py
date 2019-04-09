@@ -12,11 +12,13 @@ from tkinter import ttk
 import os.path
 from Grapher import make_graph, getdata
 
+
 class interface:
     def __init__(self, window):
         self.window = window
         self.filename = ''
         self.cur_loc = '/'
+        
         window.title('Interface')
         window.geometry('1000x500')
         #frame_x ( listbox + scrollbar )
@@ -169,6 +171,7 @@ class interface:
         self.xmax = self.entry_xmax.get()
         self.ymin = self.entry_ymin.get()
         self.ymax = self.entry_ymax.get()
+        
         
         #self.data = getdata(list(self.xfilename) + list(self.yfilename))
         #make_graph(self.data)

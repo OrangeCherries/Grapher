@@ -30,11 +30,11 @@ def make_graph(args, xlabel = '', ylabel = '', legend = '', xlim = '', ylim = ''
     ax1.set_ylabel(ylabel)
     ax1.grid()
     ax1.legend(legend)
-    if(xlim == xlim):
+    if(xlim == xlim and xlim != ''):
         ax1.set_xlim(xlim)   
-    if(ylim == ylim):
+    if(ylim == ylim and ylim != ''):
         ax1.set_ylim(ylim)
-    if xsize > 0 and ysize > 0:
+    if xsize > 0 and ysize > 0 and xsize != '' and ysize != '':
         fig1.set_size_inches(xsize, ysize)
     if title != '':
         ax1.set_title(title)
