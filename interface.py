@@ -17,34 +17,49 @@ class interface:
         self.filename = ''
         self.cur_loc = '/'
         window.title('Interface')
-        window.geometry('350x400')
-        
+        window.geometry('1000x500')
         #xdata
         self.file_button_x = ttk.Button(window, text = 'Load x data', command = self.add_x)
         self.file_button_x.grid(column = 0, row = 0)
         self.listbox_xlabel = ttk.Label(window, text = 'x data')
         self.listbox_xlabel.grid(column = 0, row = 1)
-        self.listbox_x = tk.Listbox(window)
-        self.listbox_x.grid(column = 0, row = 2)
+        
+        self.frame_x = tk.Frame(window)
+        scrollx = tk.Scrollbar(self.frame_x, orient = 'horizontal')
+        scrollx.grid(column = 0, row = 1, sticky = 'EW')
+        self.listbox_x = tk.Listbox(self.frame_x, width = 40, height = 10)
+        self.listbox_x.grid(column = 0, row = 0)
+        scrollx.config(command = self.listbox_x.xview)
+        self.listbox_x.config(xscrollcommand = scrollx.set)
+        self.frame_x.grid(column = 0, row = 1)
+        
         self.del_button_x = ttk.Button(window, text = 'Delete x data', command = self.del_x)
         self.del_button_x.grid(column = 0, row = 3)
         #ydata
         self.file_button_y = ttk.Button(window, text = 'Load y data', command = self.add_y)
-        self.file_button_y.grid(column = 1, row = 0)
+        self.file_button_y.grid(column = 2, row = 0)
         self.listbox_ylabel = ttk.Label(window, text = 'y data')
-        self.listbox_ylabel.grid(column = 1, row = 1)
-        self.listbox_y = tk.Listbox(window)
-        self.listbox_y.grid(column = 1, row = 2)
+        self.listbox_ylabel.grid(column = 2, row = 1)
+        
+        self.frame_y = tk.Frame(window)
+        scrolly = tk.Scrollbar(self.frame_y, orient = 'horizontal')
+        scrollx.grid(column = 2, row = 1, sticky = 'EW')
+        self.listbox_y = tk.Listbox(window, width = 40, height = 10)
+        self.listbox_y.grid(column = 2, row = 0)
+        scrolly.config(command = self.listbox_y.xview)
+        self.listbox_y.config(xscrollcommand = scrolly.set)
+        self.frame_y.grid(column = 2, row = 1)
+        
         self.del_button_y = ttk.Button(window, text = 'Delete y data', command = self.del_y)
-        self.del_button_y.grid(column = 1, row = 3)
+        self.del_button_y.grid(column = 2, row = 3)
         #getxy
         self.getxy_button = ttk.Button(window, text = 'get all', command = self.get_xy)
-        self.getxy_button.grid(column = 2, row = 1)
+        self.getxy_button.grid(column = 3, row = 1)
         
     def add_x(self):
         self.filename_x = filedialog.askopenfilename(initialdir = self.cur_loc, title = "Select file")
         self.listbox_x.delete(0)
-        self.listbox_x.insert(0, os.path.basename(self.filename_x))
+        self.listbox_x.insert(0, self.filename_x)
         self.cur_loc = os.path.dirname(self.filename_x)
         
     def del_x(self):
@@ -55,7 +70,7 @@ class interface:
         
     def add_y(self):
         self.filename_y = filedialog.askopenfilename(initialdir = self.cur_loc, title = "Select file")
-        self.listbox_y.insert(tk.END, os.path.basename(self.filename_y))
+        self.listbox_y.insert(tk.END, self.filename_y)
         self.cur_loc = os.path.dirname(self.filename_y)
         
     def del_y(self):
@@ -72,5 +87,6 @@ class interface:
     
     
 root = tk.Tk()
+root.resizable(False, False)
 gui = interface(root)
 root.mainloop()
