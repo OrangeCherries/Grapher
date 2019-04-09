@@ -20,7 +20,6 @@ class interface:
         self.cur_loc = '/'
         
         window.title('Interface')
-        window.geometry('1000x500')
         #frame_x ( listbox + scrollbar )
         self.frame_x = tk.Frame(window)
         #xdata
@@ -29,7 +28,7 @@ class interface:
         #x listbox
         self.listbox_xlabel = ttk.Label(self.frame_x, text = 'x data')
         self.listbox_xlabel.grid(column = 0, row = 1)
-        self.listbox_x = tk.Listbox(self.frame_x, width = 40, height = 10)
+        self.listbox_x = tk.Listbox(self.frame_x, width = 40, height = 10, bd = 3, relief = 'groove')
         self.listbox_x.grid(column = 0, row = 2)
         #x listbox scrollbar
         scrollx = tk.Scrollbar(self.frame_x, orient = 'horizontal')
@@ -50,29 +49,21 @@ class interface:
         self.listbox_ylabel = ttk.Label(self.frame_y, text = 'y data')
         self.listbox_ylabel.grid(column = 0, row = 1)
         #listbox
-        self.listbox_y = tk.Listbox(self.frame_y, width = 40, height = 10)
+        self.listbox_y = tk.Listbox(self.frame_y, width = 40, height = 10, bd = 3, relief = 'groove')
         self.listbox_y.grid(column = 0, row = 2)
         #listbox scrollbar
         scrolly = tk.Scrollbar(self.frame_y, orient = 'horizontal')
         scrolly.grid(column = 0, row = 3, sticky = 'EW')
         scrolly.config(command = self.listbox_y.xview)
         self.listbox_y.config(xscrollcommand = scrolly.set)
+        #colour picker
+        self.cp_button = ttk.Button(self.frame_y, text = 'Choose Colour', command = self.add_cp)
+        self.cp_button.grid(column = 1, row = 2)
         #del y
         self.del_button_y = ttk.Button(self.frame_y, text = 'Delete y data', command = self.del_y)
         self.del_button_y.grid(column = 0, row = 4)
         self.frame_y.grid(column = 1, row = 0, sticky = 'N')
         
-        #color picker frame
-        self.frame_cp = tk.Frame(window)
-        self.cp_button = ttk.Button(self.frame_cp, text = 'Choose Colour', command = self.add_cp)
-        self.cp_button.grid(column = 0, row = 0)
-        self.cp_label = ttk.Label(self.frame_cp, text = 'Colour')
-        self.cp_label.grid(column = 0, row = 1)
-        self.listbox_cp = tk.Listbox(self.frame_cp, width = 10, height = 10)
-        self.listbox_cp.grid(column = 0, row = 2)
-        self.del_cp_button = ttk.Button(self.frame_cp, text = 'Delete Colour', command = self.del_cp)
-        self.del_cp_button.grid(column = 0, row = 3)
-        self.frame_cp.grid(column = 2, row = 0, sticky = 'N')
                 
         #Entry boxes
         # title and labels
@@ -109,12 +100,16 @@ class interface:
         self.title_label.grid(column = 2, row = 4)
         self.entry_ymax = ttk.Entry(self.frame_entry_boxes)
         self.entry_ymax.grid(column = 2, row = 5)
-        
+        #legend
+        self.legend_label = ttk.Label(self.frame_entry_boxes, text = 'Legend')
+        self.legend_label.grid(column = 1, row = 6, columnspan = 2)
+        self.entry_legend = ttk.Entry(self.frame_entry_boxes)
+        self.entry_legend.grid(column = 1, row = 7, columnspan = 2)
         # savename
         self.savename_label = ttk.Label(self.frame_entry_boxes, text = 'Save as:')
-        self.savename_label.grid(column = 1, row = 6, columnspan = 2)
+        self.savename_label.grid(column = 1, row = 8, columnspan = 2)
         self.entry_savename = ttk.Entry(self.frame_entry_boxes)
-        self.entry_savename.grid(column = 1, row = 7, columnspan = 2)
+        self.entry_savename.grid(column = 1, row = 9, columnspan = 2)
         
         self.frame_entry_boxes.grid(column = 0, row = 4)
         
@@ -148,9 +143,8 @@ class interface:
         
     def add_cp(self):
         self.color = tk.colorchooser.askcolor()
-        self.listbox_cp.insert(tk.END, self.color[1])
         try:
-            self.listbox_cp.itemconfig(tk.END, {'fg': self.color[1]})
+            self.listbox_y.itemconfig(self.listbox_y.curselection(), {'fg': self.color[1]})
         except tk.TclError:
             pass
         
@@ -166,7 +160,7 @@ class interface:
         self.xlabel = self.entry_xlabel.get()
         self.ylabel = self.entry_ylabel.get()
         self.title = self.entry_title.get()
-        self.savename = self.savename.get()
+        self.savename = self.entry_savename.get()
         self.xmin = self.entry_xmin.get()
         self.xmax = self.entry_xmax.get()
         self.ymin = self.entry_ymin.get()
@@ -178,6 +172,5 @@ class interface:
     
     
 root = tk.Tk()
-root.resizable(False, False)
 gui = interface(root)
 root.mainloop()
