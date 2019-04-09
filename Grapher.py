@@ -6,6 +6,15 @@ Created on Mon Apr  8 12:04:27 2019
 """
 
 import matplotlib.pyplot as plt
+import pandas as pd
+
+def getdata(filenames):
+    data = []
+    for file in filenames:
+        df = pd.read_csv(file, header = None)
+        df = df.squeeze().tolist()
+        data.append[df]
+    return data
     
 def make_graph(*args, xlabel = '', ylabel = '', legend = '', xlim = float('nan'), ylim = float('nan'), xsize = 0, ysize = 0, title = '', savename = '', params = float('nan')):
     x = args[0]
