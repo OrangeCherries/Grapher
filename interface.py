@@ -163,7 +163,13 @@ class interface:
         self.yfilename = self.listbox_y.get(0, tk.END)
         self.xlabel = self.entry_xlabel.get()
         self.ylabel = self.entry_ylabel.get()
-
+        self.title = self.entry_title.get()
+        self.savename = self.savename.get()
+        self.xmin = self.entry_xmin.get()
+        self.xmax = self.entry_xmax.get()
+        self.ymin = self.entry_ymin.get()
+        self.ymax = self.entry_ymax.get()
+        
         #self.data = getdata(list(self.xfilename) + list(self.yfilename))
         #make_graph(self.data)
     

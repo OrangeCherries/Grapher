@@ -17,7 +17,7 @@ def getdata(filenames):
     print(data)
     return data
     
-def make_graph(args, xlabel = '', ylabel = '', legend = '', xlim = float('nan'), ylim = float('nan'), xsize = 0, ysize = 0, title = '', savename = '', params = float('nan')):
+def make_graph(args, xlabel = '', ylabel = '', legend = '', xlim = '', ylim = '', xsize = 0, ysize = 0, title = '', savename = '', params = float('nan')):
     x = args[0]
     ydata = []
     for i in range(1, len(args)):
