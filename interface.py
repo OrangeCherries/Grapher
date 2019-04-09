@@ -37,7 +37,7 @@ class interface:
         #del x button
         self.del_button_x = ttk.Button(self.frame_x, text = 'Delete x data', command = self.del_x)
         self.del_button_x.grid(column = 0, row = 4)
-        self.frame_x.grid(column = 0, row = 0)
+        self.frame_x.grid(column = 0, row = 0, sticky = 'N')
         
 
         #frame_Y (listbox + scrollbar)
@@ -58,7 +58,7 @@ class interface:
         #del y
         self.del_button_y = ttk.Button(self.frame_y, text = 'Delete y data', command = self.del_y)
         self.del_button_y.grid(column = 0, row = 4)
-        self.frame_y.grid(column = 1, row = 0)
+        self.frame_y.grid(column = 1, row = 0, sticky = 'N')
         
         #color picker frame
         self.frame_cp = tk.Frame(window)
@@ -66,13 +66,14 @@ class interface:
         self.cp_button.grid(column = 0, row = 0)
         self.cp_label = ttk.Label(self.frame_cp, text = 'Colour')
         self.cp_label.grid(column = 0, row = 1)
-        self.listbox_cp = tk.Listbox(self.frame_cp, width = 40, height = 10)
+        self.listbox_cp = tk.Listbox(self.frame_cp, width = 10, height = 10)
         self.listbox_cp.grid(column = 0, row = 2)
         self.del_cp_button = ttk.Button(self.frame_cp, text = 'Delete Colour', command = self.del_cp)
         self.del_cp_button.grid(column = 0, row = 3)
-        self.frame_cp.grid(column = 2, row = 0)
+        self.frame_cp.grid(column = 2, row = 0, sticky = 'N')
                 
         #Entry boxes
+        # title and labels
         self.frame_entry_boxes = tk.Frame(window)
         self.title_label = ttk.Label(self.frame_entry_boxes, text = 'Title')
         self.title_label.grid(column = 0, row = 1)
@@ -86,7 +87,36 @@ class interface:
         self.title_label.grid(column = 0, row = 5)
         self.entry_ylabel = ttk.Entry(self.frame_entry_boxes)
         self.entry_ylabel.grid(column = 0, row = 6)
+        
+        # x y min max
+        self.title_label = ttk.Label(self.frame_entry_boxes, text = 'Properties')
+        self.title_label.grid(column = 1, row = 1, columnspan = 2)
+        self.title_label = ttk.Label(self.frame_entry_boxes, text = 'x min')
+        self.title_label.grid(column = 1, row = 2)
+        self.entry_xmin = ttk.Entry(self.frame_entry_boxes)
+        self.entry_xmin.grid(column = 1, row = 3)
+        self.title_label = ttk.Label(self.frame_entry_boxes, text = 'x max')
+        self.title_label.grid(column = 2, row = 2)
+        self.entry_xmax = ttk.Entry(self.frame_entry_boxes)
+        self.entry_xmax.grid(column = 2, row = 3)
+        self.title_label = ttk.Label(self.frame_entry_boxes, text = 'y min')
+        self.title_label.grid(column = 1, row = 4)
+        self.entry_ymin = ttk.Entry(self.frame_entry_boxes)
+        self.entry_ymin.grid(column = 1, row = 5)
+        self.title_label = ttk.Label(self.frame_entry_boxes, text = 'y max')
+        self.title_label.grid(column = 2, row = 4)
+        self.entry_ymax = ttk.Entry(self.frame_entry_boxes)
+        self.entry_ymax.grid(column = 2, row = 5)
+        
+        # savename
+        self.savename_label = ttk.Label(self.frame_entry_boxes, text = 'Save as:')
+        self.savename_label.grid(column = 1, row = 6, columnspan = 2)
+        self.entry_savename = ttk.Entry(self.frame_entry_boxes)
+        self.entry_savename.grid(column = 1, row = 7, columnspan = 2)
+        
         self.frame_entry_boxes.grid(column = 0, row = 4)
+        
+        
         #getxy
         self.getxy_button = ttk.Button(window, text = 'get all', command = self.get_graphs)
         self.getxy_button.grid(column = 5, row = 1)
