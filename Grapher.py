@@ -17,7 +17,7 @@ def getdata(filenames):
     print(data)
     return data
     
-def make_graph(args, params = float('nan')):
+def make_graph(args, params = None):
     x = args[0]
     ydata = []
     for i in range(1, len(args)):
@@ -27,17 +27,16 @@ def make_graph(args, params = float('nan')):
     for y in ydata:
         ax1.plot(x, y)
     ax1.grid()
-    if(False):
+    if params is not None:
         ax1.set_xlabel(params.xlabel)
         ax1.set_ylabel(params.ylabel)
-        ax1.grid()
         ax1.legend(params.legend)
-        if(params.xlim == params.xlim and params.xlim != ''):
-            ax1.set_xlim(params.xlim)   
-        if(params.ylim == params.ylim and params.ylim != ''):
-            ax1.set_ylim(params.ylim)
-        if params.xsize > 0 and params.ysize > 0 and params.xsize != '' and params.ysize != '':
-            fig1.set_size_inches(params.xsize, params.ysize)
+        if(params.xlim == params.xlim and params.xlim[0] != '' and params.ylim[1] != 0):
+            ax1.set_xlim([float(params.xlim[0]), float(params.xlim[1])])   
+        if(params.ylim == params.ylim and params.ylim[0] != '' and params.ylim[1] != 0):
+            ax1.set_ylim([float(params.ylim[0]), float(params.ylim[1])])  
+        if float(params.xsize) > 0 and float(params.ysize) > 0 and params.xsize != '' and params.ysize != '':
+            fig1.set_size_inches(float(params.xsize), float(params.ysize))
         if params.title != '':
             ax1.set_title(params.title)
         if params.savename != '':
