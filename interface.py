@@ -12,7 +12,29 @@ from tkinter import ttk
 import os.path
 from Grapher import make_graph, getdata
 
-
+class params:
+    def __init__(self, xlabel, ylabel, xmin, xmax, ymin, ymax, xsize, ysize, title, legend, savename):
+        self.xlabel = xlabel
+        self.ylabel = ylabel
+        self.xlim = [xmin, xmax]
+        self.ylim = [ymin, ymax]
+        self.xsize = xsize
+        self.ysize = ysize
+        self.title = title
+        self.legend = legend
+        self.savename = savename
+    
+    def get(self):
+        print('xlabel ', self.xlabel)
+        print('ylabel ', self.ylabel)
+        print('xlim ', self.xlim)
+        print('ylim ', self.ylim)
+        print('xsize', self.xsize)
+        print('ysize', self.ysize)
+        print('title ', self.title)
+        print('legend ', self.legend)
+        print('savename', self.savename)
+        
 class interface:
     def __init__(self, window):
         self.window = window
@@ -59,6 +81,10 @@ class interface:
         #colour picker
         self.cp_button = ttk.Button(self.frame_y, text = 'Choose Colour', command = self.add_cp)
         self.cp_button.grid(column = 1, row = 2)
+        self.cp_bool = tk.IntVar()
+        self.cp_bool.set(0)
+        self.cp_cbox = ttk.Checkbutton(self.frame_y, text = 'Use choose colour', variable = self.cp_bool)
+        self.cp_cbox.grid(column = 1, row = 1)
         #del y
         self.del_button_y = ttk.Button(self.frame_y, text = 'Delete y data', command = self.del_y)
         self.del_button_y.grid(column = 0, row = 4)
@@ -83,7 +109,7 @@ class interface:
         
         # x y min max
         self.title_label = ttk.Label(self.frame_entry_boxes, text = 'Properties')
-        self.title_label.grid(column = 1, row = 1, columnspan = 2)
+        self.title_label.grid(column = 1, row = 0, columnspan = 2)
         self.title_label = ttk.Label(self.frame_entry_boxes, text = 'x min')
         self.title_label.grid(column = 1, row = 2)
         self.entry_xmin = ttk.Entry(self.frame_entry_boxes)
@@ -105,14 +131,22 @@ class interface:
         self.legend_label.grid(column = 1, row = 6, columnspan = 2)
         self.entry_legend = ttk.Entry(self.frame_entry_boxes)
         self.entry_legend.grid(column = 1, row = 7, columnspan = 2)
-        # savename
+        #savename
         self.savename_label = ttk.Label(self.frame_entry_boxes, text = 'Save as:')
         self.savename_label.grid(column = 1, row = 8, columnspan = 2)
         self.entry_savename = ttk.Entry(self.frame_entry_boxes)
         self.entry_savename.grid(column = 1, row = 9, columnspan = 2)
+        #xsize ysize
+        self.xsize_label = ttk.Label(self.frame_entry_boxes, text = 'width')
+        self.xsize_label.grid(column = 3, row = 1)
+        self.entry_xsize = ttk.Entry(self.frame_entry_boxes)
+        self.entry_xsize.grid(column = 3, row = 2)
+        self.ysize_label = ttk.Label(self.frame_entry_boxes, text = 'height')
+        self.ysize_label.grid(column = 4, row = 1)
+        self.entry_ysize = ttk.Entry(self.frame_entry_boxes)
+        self.entry_ysize.grid(column = 4, row = 2)
         
         self.frame_entry_boxes.grid(column = 0, row = 4)
-        
         
         #getxy
         self.getxy_button = ttk.Button(window, text = 'get all', command = self.get_graphs)
@@ -142,11 +176,12 @@ class interface:
             pass
         
     def add_cp(self):
-        self.color = tk.colorchooser.askcolor()
-        try:
-            self.listbox_y.itemconfig(self.listbox_y.curselection(), {'fg': self.color[1]})
-        except tk.TclError:
-            pass
+        if(self.cp_bool.get() == 1):
+            self.color = tk.colorchooser.askcolor()
+            try:
+                self.listbox_y.itemconfig(self.listbox_y.curselection(), {'fg': self.color[1]})
+            except tk.TclError:
+                pass
         
     def del_cp(self):
         try:
@@ -165,10 +200,14 @@ class interface:
         self.xmax = self.entry_xmax.get()
         self.ymin = self.entry_ymin.get()
         self.ymax = self.entry_ymax.get()
+        self.xsize = self.entry_xsize.get()
+        self.ysize = self.entry_ysize.get()
+        self.legend = self.entry_legend.get()
+        cur_params = params(self.xlabel, self.ylabel, self.xmin, self.xmax, self.ymin, self.ymax, self.xsize, self.ysize, self.title, self.legend, self.savename)
+        cur_params.get()
         
-        
-        #self.data = getdata(list(self.xfilename) + list(self.yfilename))
-        #make_graph(self.data)
+        self.data = getdata(list(self.xfilename) + list(self.yfilename))
+        make_graph(self.data, cur_params)
     
     
 root = tk.Tk()
