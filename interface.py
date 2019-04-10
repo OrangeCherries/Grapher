@@ -12,6 +12,12 @@ from tkinter import ttk
 import os.path
 from Grapher import make_graph, getdata
 
+class m_params:
+    def __init__(self, logx, logy, graph):
+        self.logx = logx
+        self.logy = logy
+        self.graph = graph
+        
 class params:
     def __init__(self, xlabel, ylabel, colours, xmin, xmax, ymin, ymax, xsize, ysize, title, legend, savename):
         self.xlabel = xlabel
@@ -146,6 +152,22 @@ class interface:
         self.ysize_label.grid(column = 4, row = 1)
         self.entry_ysize = ttk.Entry(self.frame_entry_boxes)
         self.entry_ysize.grid(column = 4, row = 2)
+        #graph type
+        self.graph_type = tk.StringVar()
+        self.graph_type.set('L')
+        self.graph_menu_L = tk.Radiobutton(self.frame_entry_boxes, text = 'Linear', variable = self.graph_type, value = 'L')
+        self.graph_menu_L.grid(column = 3, row = 3)
+        self.graph_menu_S = tk.Radiobutton(self.frame_entry_boxes, text = 'Scatter', variable = self.graph_type, value = 'S')
+        self.graph_menu_S.grid(column = 3, row = 4)
+        #axis type
+        self.logx_bool = tk.IntVar()
+        self.logx_bool.set(0)
+        self.logy_bool = tk.IntVar()
+        self.logy_bool.set(0)
+        self.logx_cb = tk.Checkbutton(self.frame_entry_boxes, text = 'x axis log', variable = self.logx_bool)
+        self.logx_cb.grid(column = 4, row = 3)
+        self.logy_cb = tk.Checkbutton(self.frame_entry_boxes, text = 'y axis log', variable = self.logy_bool)
+        self.logy_cb.grid(column = 4, row = 4)
         
         self.frame_entry_boxes.grid(column = 0, row = 4)
         
@@ -177,7 +199,7 @@ class interface:
             pass
         
     def add_cp(self):
-        if(self.cp_bool.get() == 1):
+        if(self.cp_bool.get() == 1 and self.listbox_y.curselection() != ()):
             self.color = tk.colorchooser.askcolor()
             try:
                 self.listbox_y.itemconfig(self.listbox_y.curselection(), {'fg': self.color[1]})
@@ -213,9 +235,14 @@ class interface:
         self.ysize = self.entry_ysize.get()
         self.legend = self.entry_legend.get()
         
-        print(self.ycolours)
+        self.logx = self.logx_bool.get()
+        self.logy = self.logy_bool.get()
+        self.graph = self.graph_type.get()
+        
         cur_params = params(self.xlabel, self.ylabel, self.ycolours, self.xmin, self.xmax, self.ymin, self.ymax, self.xsize, self.ysize, self.title, self.legend, self.savename)
         cur_params.get()
+        
+        cur_m_params = m_params(self.logx, self.logy, self.graph)
         
         self.data = getdata(list(self.xfilename) + list(self.yfilename))
         make_graph(self.data, cur_params)

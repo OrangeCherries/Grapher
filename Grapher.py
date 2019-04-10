@@ -34,7 +34,7 @@ def make_graph(args, params = None):
     if params is not None:
         ax1.set_xlabel(params.xlabel)
         ax1.set_ylabel(params.ylabel)
-        ax1.legend(params.legend)
+        ax1.legend(params.legend.split(','))
         if(params.xlim == params.xlim and params.xlim[0] != '' and params.ylim[1] != 0):
             ax1.set_xlim([float(params.xlim[0]), float(params.xlim[1])])   
         if(params.ylim == params.ylim and params.ylim[0] != '' and params.ylim[1] != 0):
