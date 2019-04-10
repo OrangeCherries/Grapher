@@ -13,9 +13,10 @@ import os.path
 from Grapher import make_graph, getdata
 
 class params:
-    def __init__(self, xlabel, ylabel, xmin, xmax, ymin, ymax, xsize, ysize, title, legend, savename):
+    def __init__(self, xlabel, ylabel, colours, xmin, xmax, ymin, ymax, xsize, ysize, title, legend, savename):
         self.xlabel = xlabel
         self.ylabel = ylabel
+        self.colours = colours
         self.xlim = [xmin, xmax]
         self.ylim = [ymin, ymax]
         self.xsize = xsize
@@ -192,6 +193,14 @@ class interface:
     def get_graphs(self):
         self.xfilename = self.listbox_x.get(0, tk.END)
         self.yfilename = self.listbox_y.get(0, tk.END)
+        self.ycolours = []
+        if(self.cp_bool.get() == 1):
+            for i in range(0, self.listbox_y.size()):
+                if self.listbox_y.itemcget(i, option = 'foreground') == '':
+                    self.ycolours.append('#000000')
+                else:
+                    self.ycolours.append(self.listbox_y.itemcget(i, option = 'foreground'))
+            
         self.xlabel = self.entry_xlabel.get()
         self.ylabel = self.entry_ylabel.get()
         self.title = self.entry_title.get()
@@ -203,7 +212,9 @@ class interface:
         self.xsize = self.entry_xsize.get()
         self.ysize = self.entry_ysize.get()
         self.legend = self.entry_legend.get()
-        cur_params = params(self.xlabel, self.ylabel, self.xmin, self.xmax, self.ymin, self.ymax, self.xsize, self.ysize, self.title, self.legend, self.savename)
+        
+        print(self.ycolours)
+        cur_params = params(self.xlabel, self.ylabel, self.ycolours, self.xmin, self.xmax, self.ymin, self.ymax, self.xsize, self.ysize, self.title, self.legend, self.savename)
         cur_params.get()
         
         self.data = getdata(list(self.xfilename) + list(self.yfilename))
