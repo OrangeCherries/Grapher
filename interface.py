@@ -237,6 +237,7 @@ class interface:
         
         self.logx = self.logx_bool.get()
         self.logy = self.logy_bool.get()
+        
         self.graph = self.graph_type.get()
         
         cur_params = params(self.xlabel, self.ylabel, self.ycolours, self.xmin, self.xmax, self.ymin, self.ymax, self.xsize, self.ysize, self.title, self.legend, self.savename)
@@ -245,7 +246,7 @@ class interface:
         cur_m_params = m_params(self.logx, self.logy, self.graph)
         
         self.data = getdata(list(self.xfilename) + list(self.yfilename))
-        make_graph(self.data, cur_params)
+        make_graph(self.data, cur_m_params, cur_params)
     
     
 root = tk.Tk()

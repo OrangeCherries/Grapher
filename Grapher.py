@@ -16,21 +16,48 @@ def getdata(filenames):
         data.append(df)
     return data
     
-def make_graph(args, params = None):
+def make_graph(args, m_params = None, params = None):
     x = args[0]
     ydata = []
     for i in range(1, len(args)):
         ydata.append(args[i])  
     fig1 = plt.figure()
     ax1 = fig1.add_subplot('111')
-    for i in range(0, len(ydata)):
-        print(i)
-        if(len(params.colours) != 0):
-            ax1.plot(x, ydata[i], color = params.colours[i])
-        else:
-            ax1.plot(x, ydata[i])
-        print(i)
+    #plot data
+    #scatter, linear
+    if(m_params.graph == 'S'):
+        ls = 'None'
+        ms= 'o'
+    else:
+        ls = '-'
+        ms = ''
+    #logx, logy parameters
+    if(m_params.logx == 1 and m_params.logy == 1):
+        for i in range(0, len(ydata)):
+            if(len(params.colours) != 0):
+                ax1.loglog(x, ydata[i], color = params.colours[i], linestyle = ls, marker = ms)
+            else:
+                ax1.loglog(x, ydata[i], linestyle = ls, marker = ms)
+    elif(m_params.logx == 1 and m_params.logy == 0):
+        for i in range(0, len(ydata)):
+            if(len(params.colours) != 0):
+                ax1.semilogx(x, ydata[i], color = params.colours[i], linestyle = ls, marker = ms)
+            else:
+                ax1.semilogx(x, ydata[i], linestyle = ls, marker = ms)
+    elif(m_params.logx == 0 and m_params.logy == 1):
+        for i in range(0, len(ydata)):
+            if(len(params.colours) != 0):
+                ax1.semilogy(x, ydata[i], color = params.colours[i], linestyle = ls, marker = ms)
+            else:
+                ax1.semilogy(x, ydata[i], linestyle = ls, marker = ms)
+    else:
+        for i in range(0, len(ydata)):
+            if(len(params.colours) != 0):
+                ax1.plot(x, ydata[i], color = params.colours[i], linestyle = ls, marker = ms)
+            else:
+                ax1.plot(x, ydata[i], linestyle = ls, marker = ms)
     ax1.grid()
+    #optional parameters (labels, title, etc...)
     if params is not None:
         ax1.set_xlabel(params.xlabel)
         ax1.set_ylabel(params.ylabel)
