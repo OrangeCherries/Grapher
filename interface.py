@@ -4,10 +4,19 @@ Created on Mon Apr  8 13:07:41 2019
 
 @author: jingxia
 """
-
+"""
+TODO:
+    -finish xdata ydata manual input
+    -xdata ydata boxes need scrollbar
+    -read manual input from xdata ydata boxes
+    -use polyfit to enable trendlines
+    -figure out how to implement linestyle property
+    -enable .txt and .xlsx file types
+    -something idiotic is happening with tkinter.colorchooser
+"""
 import tkinter as tk
 from tkinter import filedialog
-from tkinter.colorchooser import *
+from tkinter.colorchooser import askcolor
 from tkinter import ttk
 import os.path
 from Grapher import make_graph, getdata
@@ -57,7 +66,7 @@ class interface:
         #x listbox
         self.listbox_xlabel = ttk.Label(self.frame_x, text = 'x data')
         self.listbox_xlabel.grid(column = 0, row = 1)
-        self.listbox_x = tk.Listbox(self.frame_x, width = 40, height = 10, bd = 3, relief = 'groove')
+        self.listbox_x = tk.Listbox(self.frame_x, width = 30, height = 10, bd = 3, relief = 'groove')
         self.listbox_x.grid(column = 0, row = 2)
         #x listbox scrollbar
         scrollx = tk.Scrollbar(self.frame_x, orient = 'horizontal')
@@ -67,7 +76,7 @@ class interface:
         #del x button
         self.del_button_x = ttk.Button(self.frame_x, text = 'Delete x data', command = self.del_x)
         self.del_button_x.grid(column = 0, row = 4)
-        self.frame_x.grid(column = 0, row = 0, sticky = 'N')
+        self.frame_x.grid(column = 0, row = 0, padx = (10, 10))
         
 
         #frame_Y (listbox + scrollbar)
@@ -78,7 +87,7 @@ class interface:
         self.listbox_ylabel = ttk.Label(self.frame_y, text = 'y data')
         self.listbox_ylabel.grid(column = 0, row = 1)
         #listbox
-        self.listbox_y = tk.Listbox(self.frame_y, width = 40, height = 10, bd = 3, relief = 'groove')
+        self.listbox_y = tk.Listbox(self.frame_y, width = 30, height = 10, bd = 3, relief = 'groove')
         self.listbox_y.grid(column = 0, row = 2)
         #listbox scrollbar
         scrolly = tk.Scrollbar(self.frame_y, orient = 'horizontal')
@@ -95,9 +104,26 @@ class interface:
         #del y
         self.del_button_y = ttk.Button(self.frame_y, text = 'Delete y data', command = self.del_y)
         self.del_button_y.grid(column = 0, row = 4)
-        self.frame_y.grid(column = 1, row = 0, sticky = 'N')
+        self.frame_y.grid(column = 1, row = 0, padx = (10, 10))
         
-                
+        #self entry data
+        """
+        self.frame_data_entry = tk.Frame(window)
+        self.data_entry_bool = tk.IntVar()
+        self.data_entry_bool.set(0)
+        self.data_entry_cb = ttk.Checkbutton(self.frame_data_entry, text = 'Input Data', variable = self.data_entry_bool, command = self.data_entry_switch)
+        self.data_entry_cb.grid(column = 0, row = 0)
+        self.xdata_entry_label = ttk.Label(self.frame_data_entry, text = 'x data')
+        self.xdata_entry_label.grid(column = 0, row = 1)
+        self.xdata_entry = tk.Text(self.frame_data_entry, width = 10, height = 10, bd = 3, relief = 'groove', state = 'disabled')
+        self.xdata_entry.grid(column = 0, row = 2)
+        self.ydata_entry_label = ttk.Label(self.frame_data_entry, text = 'y data')
+        self.ydata_entry_label.grid(column = 1, row = 1)
+        self.ydata_entry = tk.Text(self.frame_data_entry, width = 10, height = 10, bd = 3, relief = 'groove', state = 'disabled')
+        self.ydata_entry.grid(column = 1, row = 2)
+        self.frame_data_entry.grid(column = 3, row = 0)
+        """
+        
         #Entry boxes
         # title and labels
         self.frame_entry_boxes = tk.Frame(window)
@@ -119,20 +145,20 @@ class interface:
         self.title_label.grid(column = 1, row = 0, columnspan = 2)
         self.title_label = ttk.Label(self.frame_entry_boxes, text = 'x min')
         self.title_label.grid(column = 1, row = 2)
-        self.entry_xmin = ttk.Entry(self.frame_entry_boxes)
-        self.entry_xmin.grid(column = 1, row = 3)
+        self.entry_xmin = ttk.Entry(self.frame_entry_boxes, width = 10)
+        self.entry_xmin.grid(column = 1, row = 3, padx = (1, 1))
         self.title_label = ttk.Label(self.frame_entry_boxes, text = 'x max')
         self.title_label.grid(column = 2, row = 2)
-        self.entry_xmax = ttk.Entry(self.frame_entry_boxes)
-        self.entry_xmax.grid(column = 2, row = 3)
+        self.entry_xmax = ttk.Entry(self.frame_entry_boxes, width = 10)
+        self.entry_xmax.grid(column = 2, row = 3, padx = (1, 1))
         self.title_label = ttk.Label(self.frame_entry_boxes, text = 'y min')
         self.title_label.grid(column = 1, row = 4)
-        self.entry_ymin = ttk.Entry(self.frame_entry_boxes)
-        self.entry_ymin.grid(column = 1, row = 5)
+        self.entry_ymin = ttk.Entry(self.frame_entry_boxes, width = 10)
+        self.entry_ymin.grid(column = 1, row = 5, padx = (1, 1))
         self.title_label = ttk.Label(self.frame_entry_boxes, text = 'y max')
         self.title_label.grid(column = 2, row = 4)
-        self.entry_ymax = ttk.Entry(self.frame_entry_boxes)
-        self.entry_ymax.grid(column = 2, row = 5)
+        self.entry_ymax = ttk.Entry(self.frame_entry_boxes, width = 10)
+        self.entry_ymax.grid(column = 2, row = 5, padx = (1, 1))
         #legend
         self.legend_label = ttk.Label(self.frame_entry_boxes, text = 'Legend')
         self.legend_label.grid(column = 1, row = 6, columnspan = 2)
@@ -142,7 +168,7 @@ class interface:
         self.savename_label = ttk.Label(self.frame_entry_boxes, text = 'Save as:')
         self.savename_label.grid(column = 1, row = 8, columnspan = 2)
         self.entry_savename = ttk.Entry(self.frame_entry_boxes)
-        self.entry_savename.grid(column = 1, row = 9, columnspan = 2)
+        self.entry_savename.grid(column = 1, row = 9, columnspan = 2, pady = (0, 2))
         #xsize ysize
         self.xsize_label = ttk.Label(self.frame_entry_boxes, text = 'width')
         self.xsize_label.grid(column = 3, row = 1)
@@ -168,12 +194,34 @@ class interface:
         self.logx_cb.grid(column = 4, row = 3)
         self.logy_cb = tk.Checkbutton(self.frame_entry_boxes, text = 'y axis log', variable = self.logy_bool)
         self.logy_cb.grid(column = 4, row = 4)
+        #trendline options
+        """
+        self.tl_line_bool = tk.IntVar()
+        self.tl_line_bool.set(0)
+        self.tl_eq_bool = tk.IntVar()
+        self.tl_eq_bool.set(0)
+        self.tl_y_bool = tk.IntVar()
+        self.tl_y_bool.set(0)
+        self.tl_line_cb = tk.Checkbutton(self.frame_entry_boxes, text = 'Show trendline', variable = self.tl_line_bool)
+        self.tl_line_cb.grid(column = 3, row = 6, sticky = 'W')
+        self.tl_line_cb = tk.Checkbutton(self.frame_entry_boxes, text = 'Show Equation', variable = self.tl_eq_bool)
+        self.tl_line_cb.grid(column = 3, row = 7, sticky = 'W')
+        self.tl_y_cb = tk.Checkbutton(self.frame_entry_boxes, text = 'Force y(0) = 0', variable = self.tl_y_bool)
+        self.tl_y_cb.grid(column = 3, row = 8, sticky = 'W')
+        """
         
-        self.frame_entry_boxes.grid(column = 0, row = 4)
+        self.frame_entry_boxes.grid(column = 0, row = 4, columnspan = 2)
         
         #getxy
         self.getxy_button = ttk.Button(window, text = 'get all', command = self.get_graphs)
         self.getxy_button.grid(column = 5, row = 1)
+    def data_entry_switch(self):
+        if self.xdata_entry['state'] == 'disabled':
+            self.xdata_entry['state'] = 'normal'
+            self.ydata_entry['state'] = 'normal'
+        elif self.xdata_entry['state'] == 'normal':
+            self.xdata_entry['state'] = 'disabled'
+            self.ydata_entry['state'] = 'disabled'
         
     def add_x(self):
         self.filename_x = filedialog.askopenfilename(initialdir = self.cur_loc, title = "Select file")
@@ -200,7 +248,7 @@ class interface:
         
     def add_cp(self):
         if(self.cp_bool.get() == 1 and self.listbox_y.curselection() != ()):
-            self.color = tk.colorchooser.askcolor()
+            self.color = askcolor()
             try:
                 self.listbox_y.itemconfig(self.listbox_y.curselection(), {'fg': self.color[1]})
             except tk.TclError:
