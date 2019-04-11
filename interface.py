@@ -6,13 +6,9 @@ Created on Mon Apr  8 13:07:41 2019
 """
 """
 TODO:
-    -finish xdata ydata manual input
-    -xdata ydata boxes need scrollbar
-    -read manual input from xdata ydata boxes
     -use polyfit to enable trendlines
     -figure out how to implement linestyle property
     -enable .txt and .xlsx file types
-    -something idiotic is happening with tkinter.colorchooser
     -change scrollers to self.
 """
 import tkinter as tk
@@ -237,17 +233,29 @@ class interface:
         except tk.TclError:
             pass
         
-    def get_graphs(self):
-        self.xfilename = self.listbox_x.get(0, tk.END)
-        self.yfilename = self.listbox_y.get(0, tk.END)
-        self.ycolours = []
-        if(self.cp_bool.get() == 1):
-            for i in range(0, self.listbox_y.size()):
-                if self.listbox_y.itemcget(i, option = 'foreground') == '':
-                    self.ycolours.append('#000000')
-                else:
-                    self.ycolours.append(self.listbox_y.itemcget(i, option = 'foreground'))
+    def get_graphs(self):        
+        #if load data is used
+        if self.data_entry_bool.get() == 0:
+            self.xfilename = self.listbox_x.get(0, tk.END)
+            self.yfilename = self.listbox_y.get(0, tk.END)
+            self.ycolours = []
+            if(self.cp_bool.get() == 1):
+                for i in range(0, self.listbox_y.size()):
+                    if self.listbox_y.itemcget(i, option = 'foreground') == '':
+                        self.ycolours.append('#000000')
+                    else:
+                        self.ycolours.append(self.listbox_y.itemcget(i, option = 'foreground'))
+            #self.data = getdata(list(self.xfilename) + list(self.yfilename))
             
+        #if data entry is used    
+        elif self.data_entry_bool.get() == 1:
+            #too lazy to learn regex, so .replace() it is
+            self.ycolours = []
+            self.xdata_e = [float(val) for val in self.xdata_entry.get('1.0', 'end-1c').replace('\r', ' ').replace('\n', ' ').replace(',', ' ').split()]
+            self.ydata_e = [float(val) for val in self.ydata_entry.get('1.0', 'end-1c').replace('\r', ' ').replace('\n', ' ').replace(',', ' ').split()]
+            self.data = [self.xdata_e, self.ydata_e]
+            print(self.data)
+        
         self.xlabel = self.entry_xlabel.get()
         self.ylabel = self.entry_ylabel.get()
         self.title = self.entry_title.get()
@@ -259,24 +267,14 @@ class interface:
         self.xsize = self.entry_xsize.get()
         self.ysize = self.entry_ysize.get()
         self.legend = self.entry_legend.get()
-        
         self.logx = self.logx_bool.get()
         self.logy = self.logy_bool.get()
-        
         self.graph = self.graph_type.get()
-        self.xdata_e = self.xdata_entry.get('1.0', 'end-1c')
-        self.ydata_e = self.ydata_entry.get('1.0', 'end-1c')
-        print(self.xdata_e)
-        print(self.ydata_e)
         
-        #cur_params = params(self.xlabel, self.ylabel, self.ycolours, self.xmin, self.xmax, self.ymin, self.ymax, self.xsize, self.ysize, self.title, self.legend, self.savename)
+        cur_params = params(self.xlabel, self.ylabel, self.ycolours, self.xmin, self.xmax, self.ymin, self.ymax, self.xsize, self.ysize, self.title, self.legend, self.savename)
+        cur_m_params = m_params(self.logx, self.logy, self.graph)
+        make_graph(self.data, cur_m_params, cur_params)
         
-        #cur_m_params = m_params(self.logx, self.logy, self.graph)
-        
-        #self.data = getdata(list(self.xfilename) + list(self.yfilename))
-        #make_graph(self.data, cur_m_params, cur_params)
-    
-    
 root = tk.Tk()
 gui = interface(root)
 root.mainloop()
