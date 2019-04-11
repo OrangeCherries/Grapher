@@ -8,6 +8,25 @@ Created on Mon Apr  8 12:04:27 2019
 import matplotlib.pyplot as plt
 import pandas as pd
 
+class m_params:
+    def __init__(self, logx, logy, graph):
+        self.logx = logx
+        self.logy = logy
+        self.graph = graph
+        
+class params:
+    def __init__(self, xlabel, ylabel, colours, xmin, xmax, ymin, ymax, xsize, ysize, title, legend, savename):
+        self.xlabel = xlabel
+        self.ylabel = ylabel
+        self.colours = colours
+        self.xlim = [xmin, xmax]
+        self.ylim = [ymin, ymax]
+        self.xsize = xsize
+        self.ysize = ysize
+        self.title = title
+        self.legend = legend
+        self.savename = savename
+
 def getdata(filenames):
     data = []
     for file in filenames:

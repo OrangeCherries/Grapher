@@ -13,44 +13,15 @@ TODO:
     -figure out how to implement linestyle property
     -enable .txt and .xlsx file types
     -something idiotic is happening with tkinter.colorchooser
+    -change scrollers to self.
 """
 import tkinter as tk
 from tkinter import filedialog
 from tkinter.colorchooser import askcolor
 from tkinter import ttk
 import os.path
-from Grapher import make_graph, getdata
-
-class m_params:
-    def __init__(self, logx, logy, graph):
-        self.logx = logx
-        self.logy = logy
-        self.graph = graph
-        
-class params:
-    def __init__(self, xlabel, ylabel, colours, xmin, xmax, ymin, ymax, xsize, ysize, title, legend, savename):
-        self.xlabel = xlabel
-        self.ylabel = ylabel
-        self.colours = colours
-        self.xlim = [xmin, xmax]
-        self.ylim = [ymin, ymax]
-        self.xsize = xsize
-        self.ysize = ysize
-        self.title = title
-        self.legend = legend
-        self.savename = savename
+from Grapher import make_graph, getdata, m_params, params
     
-    def get(self):
-        print('xlabel ', self.xlabel)
-        print('ylabel ', self.ylabel)
-        print('xlim ', self.xlim)
-        print('ylim ', self.ylim)
-        print('xsize', self.xsize)
-        print('ysize', self.ysize)
-        print('title ', self.title)
-        print('legend ', self.legend)
-        print('savename', self.savename)
-        
 class interface:
     def __init__(self, window):
         self.window = window
@@ -107,7 +78,6 @@ class interface:
         self.frame_y.grid(column = 1, row = 0, padx = (10, 10))
         
         #self entry data
-        """
         self.frame_data_entry = tk.Frame(window)
         self.data_entry_bool = tk.IntVar()
         self.data_entry_bool.set(0)
@@ -117,13 +87,22 @@ class interface:
         self.xdata_entry_label.grid(column = 0, row = 1)
         self.xdata_entry = tk.Text(self.frame_data_entry, width = 10, height = 10, bd = 3, relief = 'groove', state = 'disabled')
         self.xdata_entry.grid(column = 0, row = 2)
-        self.ydata_entry_label = ttk.Label(self.frame_data_entry, text = 'y data')
-        self.ydata_entry_label.grid(column = 1, row = 1)
-        self.ydata_entry = tk.Text(self.frame_data_entry, width = 10, height = 10, bd = 3, relief = 'groove', state = 'disabled')
-        self.ydata_entry.grid(column = 1, row = 2)
-        self.frame_data_entry.grid(column = 3, row = 0)
-        """
+        self.scroll_x_entry = tk.Scrollbar(self.frame_data_entry, orient = 'vertical')
+        self.scroll_x_entry.grid(column = 1, row = 2, sticky = 'NS')
+        self.scroll_x_entry.config(command = self.xdata_entry.yview)
+        self.xdata_entry.config(yscrollcommand = self.scroll_x_entry.set)
         
+        self.ydata_entry_label = ttk.Label(self.frame_data_entry, text = 'y data')
+        self.ydata_entry_label.grid(column = 2, row = 1)
+        self.ydata_entry = tk.Text(self.frame_data_entry, width = 10, height = 10, bd = 3, relief = 'groove', state = 'disabled')
+        self.ydata_entry.grid(column = 2, row = 2)
+        self.scroll_y_entry = tk.Scrollbar(self.frame_data_entry, orient = 'vertical')
+        self.scroll_y_entry.grid(column = 3, row = 2, sticky = 'NS')
+        self.scroll_y_entry.config(command = self.ydata_entry.yview)
+        self.ydata_entry.config(yscrollcommand = self.scroll_y_entry.set)
+        
+        self.frame_data_entry.grid(column = 3, row = 0)
+                
         #Entry boxes
         # title and labels
         self.frame_entry_boxes = tk.Frame(window)
@@ -195,7 +174,6 @@ class interface:
         self.logy_cb = tk.Checkbutton(self.frame_entry_boxes, text = 'y axis log', variable = self.logy_bool)
         self.logy_cb.grid(column = 4, row = 4)
         #trendline options
-        """
         self.tl_line_bool = tk.IntVar()
         self.tl_line_bool.set(0)
         self.tl_eq_bool = tk.IntVar()
@@ -208,7 +186,6 @@ class interface:
         self.tl_line_cb.grid(column = 3, row = 7, sticky = 'W')
         self.tl_y_cb = tk.Checkbutton(self.frame_entry_boxes, text = 'Force y(0) = 0', variable = self.tl_y_bool)
         self.tl_y_cb.grid(column = 3, row = 8, sticky = 'W')
-        """
         
         self.frame_entry_boxes.grid(column = 0, row = 4, columnspan = 2)
         
@@ -287,14 +264,17 @@ class interface:
         self.logy = self.logy_bool.get()
         
         self.graph = self.graph_type.get()
+        self.xdata_e = self.xdata_entry.get('1.0', 'end-1c')
+        self.ydata_e = self.ydata_entry.get('1.0', 'end-1c')
+        print(self.xdata_e)
+        print(self.ydata_e)
         
-        cur_params = params(self.xlabel, self.ylabel, self.ycolours, self.xmin, self.xmax, self.ymin, self.ymax, self.xsize, self.ysize, self.title, self.legend, self.savename)
-        cur_params.get()
+        #cur_params = params(self.xlabel, self.ylabel, self.ycolours, self.xmin, self.xmax, self.ymin, self.ymax, self.xsize, self.ysize, self.title, self.legend, self.savename)
         
-        cur_m_params = m_params(self.logx, self.logy, self.graph)
+        #cur_m_params = m_params(self.logx, self.logy, self.graph)
         
-        self.data = getdata(list(self.xfilename) + list(self.yfilename))
-        make_graph(self.data, cur_m_params, cur_params)
+        #self.data = getdata(list(self.xfilename) + list(self.yfilename))
+        #make_graph(self.data, cur_m_params, cur_params)
     
     
 root = tk.Tk()
