@@ -1,0 +1,64 @@
+General Notes:
+-no logs and not much in error handling
+-tested with windows, filepaths may not work with linux / OSX
+
+Load x y data listbox:
+-only one x data file can be loaded
+-multiple y data files can be loaded
+-cannot plot multiple axis 
+-may not work with linux / OSX
+
+Choose Colour: 
+-check 'Use choose colour' to enable
+-if not enabled, default matplotlib colors are used
+-if enabled and no colors are chosen, black '#000000' will be used
+-works with y data listbox, does not work with data input
+-select a data file in y data listbox to choose a color
+-works with scatter
+
+Input Data:
+-check 'input Data' checkbutton to enable this
+-use either load or input.  They do not work at the same time.  If 'input Data' is checked, load files will be ignored
+-enter list seperated by a combination of commas, line breaks, or spaces
+-does not work with colour chooser
+
+Title, X label, Y label, Legend
+-enter string as string
+-does not work with latex if commands require the backslash '\'
+-uses default matplotlib font and size and color
+-enter legend as comma seperated string
+
+xmin, ymin, xmax, ymax
+-numeric value only, must fulfill xmin < xmax and ymin < ymax
+
+width, height
+-width and height in inches
+-must be positive numeric values
+
+Save as
+-if left blank, graph will not be saved
+-must include the file extension(i.e. to save as a.jpg, enter 'a.jpg')
+
+Line, Scatter
+-choose one
+-colour works with both, but linestyle obviously only works with line
+-line does not have markers
+-scatter uses matplotlib 'o' marker
+
+x axis log, y axis log
+-if none are checked, uses default plot
+-if x axis log is checked, y axis log unchecked => uses semilogx
+-if x axis log unchecked, y axis log is checked => uses semilogy
+-if both are checked => loglog
+-can work with either scatter or line
+
+trendlines
+-if shown, uses the '--' linestyle
+-line and equation uses default matplotlib color
+
+get all
+-creates graph
+-graph will only save if save as entry is filled
+-graph will appear regardless if saved or not
+
+

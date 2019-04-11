@@ -31,7 +31,7 @@ class interface:
         self.file_button_x = ttk.Button(self.frame_x, text = 'Load x data', command = self.add_x)
         self.file_button_x.grid(column = 0, row = 0)
         #x listbox
-        self.listbox_xlabel = ttk.Label(self.frame_x, text = 'x data')
+        self.listbox_xlabel = ttk.Label(self.frame_x, text = 'x data (load from file)')
         self.listbox_xlabel.grid(column = 0, row = 1)
         self.listbox_x = tk.Listbox(self.frame_x, width = 30, height = 10, bd = 3, relief = 'groove')
         self.listbox_x.grid(column = 0, row = 2)
@@ -51,7 +51,7 @@ class interface:
         #ydata
         self.file_button_y = ttk.Button(self.frame_y, text = 'Load y data', command = self.add_y)
         self.file_button_y.grid(column = 0, row = 0) 
-        self.listbox_ylabel = ttk.Label(self.frame_y, text = 'y data')
+        self.listbox_ylabel = ttk.Label(self.frame_y, text = 'y data (load from file)')
         self.listbox_ylabel.grid(column = 0, row = 1)
         #listbox
         self.listbox_y = tk.Listbox(self.frame_y, width = 30, height = 10, bd = 3, relief = 'groove')
@@ -245,7 +245,7 @@ class interface:
                         self.ycolours.append('#000000')
                     else:
                         self.ycolours.append(self.listbox_y.itemcget(i, option = 'foreground'))
-            #self.data = getdata(list(self.xfilename) + list(self.yfilename))
+            self.data = getdata(list(self.xfilename) + list(self.yfilename))
             
         #if data entry is used    
         elif self.data_entry_bool.get() == 1:
@@ -254,7 +254,6 @@ class interface:
             self.xdata_e = [float(val) for val in self.xdata_entry.get('1.0', 'end-1c').replace('\r', ' ').replace('\n', ' ').replace(',', ' ').split()]
             self.ydata_e = [float(val) for val in self.ydata_entry.get('1.0', 'end-1c').replace('\r', ' ').replace('\n', ' ').replace(',', ' ').split()]
             self.data = [self.xdata_e, self.ydata_e]
-            print(self.data)
         
         self.xlabel = self.entry_xlabel.get()
         self.ylabel = self.entry_ylabel.get()

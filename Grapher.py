@@ -91,5 +91,6 @@ def make_graph(args, m_params = None, params = None):
             ax1.set_title(params.title)
         if params.savename != '':
             fig1.savefig(params.savename, bbox_inches = 'tight')
+    plt.show(block=True)
     
     
