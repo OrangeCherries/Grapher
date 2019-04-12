@@ -1,6 +1,7 @@
 General Notes:
 -no logs and not much in error handling
 -tested with windows, filepaths may not work with linux / OSX
+-most entryboxes may be empty, without a savename value, the file will not be saved 
 
 Load x y data listbox:
 -only one x data file can be loaded

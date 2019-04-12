@@ -10,13 +10,14 @@ TODO:
     -figure out how to implement linestyle property
     -enable .txt and .xlsx file types
     -change scrollers to self.
+    -(maybe) change save system
 """
 import tkinter as tk
 from tkinter import filedialog
 from tkinter.colorchooser import askcolor
 from tkinter import ttk
 import os.path
-from Grapher import make_graph, getdata, m_params, params
+from Grapher import make_graph, getdata, make_trendline, m_params, params
     
 class interface:
     def __init__(self, window):
@@ -209,9 +210,10 @@ class interface:
             pass
         
     def add_y(self):
-        self.filename_y = filedialog.askopenfilename(initialdir = self.cur_loc, title = "Select file")
-        self.listbox_y.insert(tk.END, self.filename_y)
-        self.cur_loc = os.path.dirname(self.filename_y)
+        if self.listbox_y.size() <= 10:
+            self.filename_y = filedialog.askopenfilename(initialdir = self.cur_loc, title = "Select file")
+            self.listbox_y.insert(tk.END, self.filename_y)
+            self.cur_loc = os.path.dirname(self.filename_y)
         
     def del_y(self):
         try:
@@ -254,6 +256,11 @@ class interface:
             self.xdata_e = [float(val) for val in self.xdata_entry.get('1.0', 'end-1c').replace('\r', ' ').replace('\n', ' ').replace(',', ' ').split()]
             self.ydata_e = [float(val) for val in self.ydata_entry.get('1.0', 'end-1c').replace('\r', ' ').replace('\n', ' ').replace(',', ' ').split()]
             self.data = [self.xdata_e, self.ydata_e]
+        """
+        for i in range(1, len(self.data)):
+            self.trendline = make_trendline(self.data[0], self.data[i])
+            self.data
+        """
         
         self.xlabel = self.entry_xlabel.get()
         self.ylabel = self.entry_ylabel.get()

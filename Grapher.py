@@ -7,6 +7,7 @@ Created on Mon Apr  8 12:04:27 2019
 
 import matplotlib.pyplot as plt
 import pandas as pd
+import numpy as np
 
 class m_params:
     def __init__(self, logx, logy, graph):
@@ -34,6 +35,12 @@ def getdata(filenames):
         df = df.squeeze().tolist()
         data.append(df)
     return data
+
+def make_trendline(xdata, ydata, fit = False):
+    z = np.polyfit(xdata, ydata, 1)
+    p = np.poly1d(z)
+    return p(xdata)
+    
     
 def make_graph(args, m_params = None, params = None):
     x = args[0]
